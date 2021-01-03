@@ -157,10 +157,9 @@ AFRAME.registerSystem('bullet', {
   /**
    * Register single target.
    */
-  registerTarget: function (targetComponent, isStatic) {
+  registerTarget: function (targetComponent) {
     var targetObj;
     this.targets.push(targetComponent.el);
-    if (!isStatic) { return; }
 
     // Precalculate bounding box of bullet.
     targetObj = targetComponent.el.object3D;
@@ -267,7 +266,7 @@ AFRAME.registerComponent('target_bullet', {
   init: function () {
     var el = this.el;
     el.addEventListener('object3dset', evt => {
-      el.sceneEl.systems.bullet.registerTarget(this, this.data.static);
+      el.sceneEl.systems.bullet.registerTarget(this);
     });
   },
 
@@ -311,3 +310,74 @@ AFRAME.registerComponent('bullet', {
     });
   }
 });
+
+AFRAME.registerComponent('enemy', {
+  schema: {
+
+  },
+
+  init: function () {
+    this.spawnPos = this.el.object3D.position.y;
+    this.vulnerable = false;
+
+    this.el.addEventListener('gamestart', this.gamestart.bind(this));
+    this.el.addEventListener('die', this.enemydie.bind(this));
+  },
+
+  gamestart: function () {
+    this.el.object3D.visible = true;
+    this.vulnerable = true;
+    this.spawnPos = this.el.object3D.position.y;
+
+    // document.getElementById('title').object3D.visible = false;
+    document.getElementById('start_button').object3D.visible = false;
+    document.getElementById('howtoplay_button').object3D.visible = false;
+    document.getElementById('score_display').object3D.visible = true;
+    document.getElementById('health_display').object3D.visible = true;
+  },
+
+  enemydie: function () {
+    var score_display = document.getElementById("score_display");
+    console.log(score_display.getAttribute('value'));
+    if(!this.vulnerable) {return;}
+    score+=1;
+    score_display.setAttribute('value', 'Score: ' + score);
+    this.vulnerable = false;
+    this.el.object3D.visible = false;
+    setTimeout(() => {
+      this.el.object3D.visible = true;
+      this.vulnerable = true;
+    }, 2000 + Math.floor(Math.random() * 3000));
+  }
+  
+});
+
+AFRAME.registerComponent('player', {
+  schema: {
+    
+  },
+
+  init: function () {
+    this.el.addEventListener('hit', this.health_drop.bind(this));
+    this.el.addEventListener('die', this.gamestop.bind(this));
+  },
+
+  health_drop: function() {
+    var health_display = document.getElementById('health_display');
+    health-=1;
+    health_display.setAttribute('value', 'Health: ' + health);
+  },
+
+  gamestop: function () {
+    console.log("berhenti");
+    health = 3;
+    score = 0;
+    document.getElementById('song_game').components.sound.stopSound();
+    document.getElementById('start_button').object3D.visible = true;
+    document.getElementById('howtoplay_button').object3D.visible = true;
+    document.getElementById('score_display').object3D.visible = false;
+    document.getElementById('health_display').object3D.visible = false;
+    this.el.emit('endgame');
+  }
+});
+

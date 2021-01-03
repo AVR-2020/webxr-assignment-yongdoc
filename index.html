@@ -23,8 +23,8 @@
       <a-asset-item id="gunshot1" src="assets/sounds/gunshot1.mp3" response-type="arraybuffer"></a-asset-item>
     </a-assets>
 
-    <a-entity bullet="name: normal; speed: 10.0; poolSize: 20"
-                geometry="primitive: sphere; radius: 0.05;"
+    <a-entity bullet="name: normal; speed: 2.0; poolSize: 20"
+                geometry="primitive: sphere; radius: 0.03;"
                 material="color: #fffa61;"></a-entity>
 
     <a-entity id="mainmenu" position="0 1.8 -3">
@@ -33,8 +33,8 @@
         target_bullet
         geometry="primitive: box; depth:0.1 ;height:0.5 ;width: 2;"
         material="color: #000000; opacity: 0.6"
-        proxy-event__playsong="event: die; to: #song_game; as: playsong"
-        proxy-event__gamestart="event: die; to: #mainmenu; as gamestart">
+        proxy-event__gamestart="event: die; to: .enemies; as: gamestart"
+        proxy-event__playsong="event: die; to: #song_game; as: playsong">
         <a-entity id="start" text="value: START; color: white; anchor: left; width: 6; align: center;" position= "-3 0 0.06" opacity="1.0"></a-entity>
       </a-entity>
       <a-entity id="howtoplay_button"
@@ -54,6 +54,11 @@
         animation__close="property: visible; to: false; startEvents: closeoverlay"
         visible="false"
       >
+        <a-entity text="value: HOW TO PLAY; color: white; anchor: left; width: 6; align: center;" position="-3 1 0.1" opacity="1.0"></a-entity>
+        <a-entity text="value: - Shoot the enemy to get score; color: white; anchor: left; width: 4; align: left;" position="-1.2 0.5 0.1" opacity="1.0"></a-entity>
+        <a-entity text="value: - Dodge enemies' bullet; color: white; anchor: left; width: 4; align: left;" position="-1.2 0.3 0.1" opacity="1.0"></a-entity>
+        <a-entity text="value: - Use Oculus Quest; color: white; anchor: left; width: 4; align: left;" position="-1.2 0.1 0.1" opacity="1.0"></a-entity>
+        <a-entity text="value: - Have fun!; color: white; anchor: left; width: 4; align: left;" position="-1.2 -0.1 0.1" opacity="1.0"></a-entity>
         <a-entity id="close_overlay"
           position="1.1 -1.0 0.2"
           target_bullet
@@ -65,7 +70,135 @@
         </a-entity>
       </a-entity>
     </a-entity>
+    
+    <a-entity
+      class="enemies"
+      id="enemy1"
+      position="2 0.9 -3"
+      enemy
+      target_bullet
+      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.8;"
+      material="src: assets/pictures/brick.jpg"
+      look-at="#enemy_view"
+      visible="false">
+    </a-entity>
+    <a-entity
+      class="enemies"
+      id="enemy1_gun"
+      enemy
+      position="1.7 1.4 -2.5"
+      look-at="#pistol_view"
+      visible="false"
+    >
+      <a-entity
+        shooter="bulletTypes: normal; activeBulletType: normal"
+        rotation="0 180 0"
+      >
+      </a-entity>
+      <a-entity
+        obj-model="obj: assets\objects\usp45.obj;"
+        material="color: #111111"
+        scale="0.05 0.05 0.05"
+        rotation="0 90 0">
+      </a-entity>
+    </a-entity>
 
+    <a-entity
+      class="enemies"
+      id="enemy2"
+      position="2 0.9 -6"
+      enemy
+      target_bullet
+      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.8;"
+      material="src: assets/pictures/brick.jpg"
+      look-at="#enemy_view"
+      visible="false">
+    </a-entity>
+    <a-entity
+      class="enemies"
+      id="enemy2_gun"
+      enemy
+      position="1.7 1.4 -5.5"
+      look-at="#pistol_view"
+      visible="false"
+    >
+      <a-entity
+        shooter="bulletTypes: normal; activeBulletType: normal"
+        rotation="0 180 0"
+      >
+      </a-entity>
+      <a-entity
+        obj-model="obj: assets\objects\usp45.obj;"
+        material="color: #111111"
+        scale="0.05 0.05 0.05"
+        rotation="0 90 0">
+      </a-entity>
+    </a-entity>
+    
+    <a-entity
+      class="enemies"
+      id="enemy3"
+      position="-2 0.9 -3"
+      enemy
+      target_bullet
+      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.8;"
+      material="src: assets/pictures/brick.jpg"
+      look-at="#enemy_view"
+      visible="false">
+    </a-entity>
+    <a-entity
+      class="enemies"
+      id="enemy3_gun"
+      enemy
+      position="-2.3 1.4 -2.5"
+      look-at="#pistol_view"
+      visible="false"
+    >
+      <a-entity
+        shooter="bulletTypes: normal; activeBulletType: normal"
+        rotation="0 180 0"
+      >
+      </a-entity>
+      <a-entity
+        obj-model="obj: assets\objects\usp45.obj;"
+        material="color: #111111"
+        scale="0.05 0.05 0.05"
+        rotation="0 90 0">
+      </a-entity>
+    </a-entity>
+
+    <a-entity
+      class="enemies"
+      id="enemy4"
+      position="-2 0.9 -6"
+      enemy
+      target_bullet
+      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.8;"
+      material="src: assets/pictures/brick.jpg"
+      look-at="#enemy_view"
+      visible="false">
+    </a-entity>
+    <a-entity
+      class="enemies"
+      id="enemy4_gun"
+      enemy
+      position="-2.3 1.4 -5.5"
+      look-at="#pistol_view"
+      visible="false"
+    >
+      <a-entity
+        shooter="bulletTypes: normal; activeBulletType: normal"
+        rotation="0 180 0"
+      >
+      </a-entity>
+      <a-entity
+        obj-model="obj: assets\objects\usp45.obj;"
+        material="color: #111111"
+        scale="0.05 0.05 0.05"
+        rotation="0 90 0">
+      </a-entity>
+    </a-entity>
+    
     <a-entity id="right_gun"
       htc-vive-controls="hand: right;"
       oculus-touch-controls="hand: right; model: false;"
@@ -89,11 +222,19 @@
       <a-entity id="left_laser" light="type: spot; angle: 1" position="0 0 0" visible="false" in-vr></a-entity>
     </a-entity>
 
+    
+    <a-entity id="pistol_view" position="0 1.4 0"></a-entity>
+    <a-entity id="enemy_view" position="0 0.9 0"></a-entity>
     <a-camera id="camera" shooter="bulletTypes: normal; activeBulletType: normal;" click-to-shoot wasd-controls-enabled="false">
       <a-entity id="fps_laser" light="type: spot; angle: 1" position="0 0 0" visible="true" in-vr></a-entity>
-      <a-cylinder position="0 -0.75 0" scale="0.25 1.8 0.25"></a-cylinder>
-      <a-entity id="health_display" text="value: HP: 3; color: white; anchor: left; width:1.5; align: center;" position= "-0.75 0.7 -1" resize-text in-vr visible="false"></a-entity>
-      <a-entity id="score_display" text="value: Score: 0; color: white; anchor: left; width:1.5; align: center;" position= "-0.75 0.8 -1" resize-text in-vr visible="false"></a-entity>
+      <a-cylinder id="player"
+        player
+        target_bullet="healthPoints: 3"
+        position="0 -0.75 0"
+        height="1.8"
+        radius="0.25"></a-cylinder>
+      <a-text id="health_display" value="HP: 3" color="white" anchor="left" width="1.5" align="center" position= "-0.75 0.7 -1" resize-text in-vr visible="false"></a-text>
+      <a-text id="score_display" value="Score: 0" color="white" anchor="left" width="1.5" align="center" position= "-0.75 0.8 -1" resize-text in-vr visible="false"></a-text>
     </a-camera>
     <a-entity id="song_game" sound="src: #song; volume: 0.15; loop: false; on: playsong; positional: false"></a-entity>
     
