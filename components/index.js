@@ -11,20 +11,23 @@ AFRAME.registerComponent('in-vr', {
     var vr = document.getElementById('scene');
     var leftLaserGun = document.getElementById("left_laser").object3D;
     var rightLaserGun = document.getElementById("right_laser").object3D;
-    var fpsLaserGun = document.getElementById("fps_laser").object3D;
+    var rightGun = document.getElementById("right_gun").object3D;
+    var leftGun = document.getElementById("left_gun").object3D;
     var scoreTitle = document.getElementById("score_display");
     var healthTitle = document.getElementById("health_display");
     vr.addEventListener('enter-vr', function() {
       healthTitle.setAttribute('position','-0.75 0.85 -1');
       scoreTitle.setAttribute('position','-0.75 0.95 -1');
-      fpsLaserGun.visible = false;
+      rightGun.visible = true;
+      leftGun.visible = true;
       leftLaserGun.visible = true;
       rightLaserGun.visible = true;
     })
     vr.addEventListener('exit-vr', function() {
       healthTitle.setAttribute('position','-0.75 0.7 -1');
       scoreTitle.setAttribute('position','-0.75 0.8 -1');
-      fpsLaserGun.visible = true;
+      rightGun.visible = false;
+      leftGun.visible = false;
       leftLaserGun.visible = false;
       rightLaserGun.visible = false;
     })
@@ -322,41 +325,53 @@ AFRAME.registerComponent('enemy', {
 
     this.el.addEventListener('gamestart', this.gamestart.bind(this));
     this.el.addEventListener('die', this.enemydie.bind(this));
+    this.el.addEventListener('endgame', this.enemydespawn.bind(this));
   },
 
   gamestart: function () {
-    this.el.object3D.visible = true;
-    this.vulnerable = true;
-    this.spawnPos = this.el.object3D.position.y;
-
-    // document.getElementById('title').object3D.visible = false;
+    document.getElementById('title').object3D.visible = false;
     document.getElementById('start_button').object3D.visible = false;
     document.getElementById('howtoplay_button').object3D.visible = false;
     document.getElementById('score_display').object3D.visible = true;
     document.getElementById('health_display').object3D.visible = true;
+
+    this.enemyspawn();
+  },
+
+  enemydespawn: function () {
+    this.el.object3D.visible = false;
+    var enemy_gun = document.getElementById(this.el.id + "_gun");
+    enemy_gun.object3D.visible = false;
   },
 
   enemydie: function () {
     var score_display = document.getElementById("score_display");
-    console.log(score_display.getAttribute('value'));
+    var enemy_gun = document.getElementById(this.el.id + "_gun");
     if(!this.vulnerable) {return;}
     score+=1;
     score_display.setAttribute('value', 'Score: ' + score);
     this.vulnerable = false;
+    enemy_gun.object3D.visible = false;
     this.el.object3D.visible = false;
+    this.enemyspawn();
+  },
+
+  enemyspawn: function () {
+    var enemy_gun = document.getElementById(this.el.id + "_gun");
+    var gun_handler = document.getElementById(enemy_gun.id  + "_shoothandler");
     setTimeout(() => {
-      this.el.object3D.visible = true;
-      this.vulnerable = true;
-    }, 2000 + Math.floor(Math.random() * 3000));
+      this.el.object3D.visible = true,
+      enemy_gun.object3D.visible = true,
+      this.vulnerable = true,
+      setTimeout(() => {
+        gun_handler.emit('shoot');
+      }, 1000 + Math.floor(Math.random() * 1000));
+    }, 2000 + Math.floor(Math.random() * 2000));
   }
   
 });
 
 AFRAME.registerComponent('player', {
-  schema: {
-    
-  },
-
   init: function () {
     this.el.addEventListener('hit', this.health_drop.bind(this));
     this.el.addEventListener('die', this.gamestop.bind(this));
@@ -365,13 +380,14 @@ AFRAME.registerComponent('player', {
   health_drop: function() {
     var health_display = document.getElementById('health_display');
     health-=1;
-    health_display.setAttribute('value', 'Health: ' + health);
+    health_display.setAttribute('value', 'HP: ' + health);
   },
 
   gamestop: function () {
     console.log("berhenti");
     health = 3;
     score = 0;
+    document.getElementById('title').object3D.visible = true;
     document.getElementById('song_game').components.sound.stopSound();
     document.getElementById('start_button').object3D.visible = true;
     document.getElementById('howtoplay_button').object3D.visible = true;

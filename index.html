@@ -28,6 +28,7 @@
                 material="color: #fffa61;"></a-entity>
 
     <a-entity id="mainmenu" position="0 1.8 -3">
+      <a-text id="title" value="GUN BEAT" color="#d4450d" font="monoid" anchor="left" width="12" align="center" position="-6 1.4 0"></a-text>
       <a-entity id="start_button"
         position="0 0.2 0"
         target_bullet
@@ -74,10 +75,10 @@
     <a-entity
       class="enemies"
       id="enemy1"
-      position="2 0.9 -3"
+      position="2 0.8 -3"
       enemy
       target_bullet
-      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.8;"
+      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.6;"
       material="src: assets/pictures/brick.jpg"
       look-at="#enemy_view"
       visible="false">
@@ -85,12 +86,12 @@
     <a-entity
       class="enemies"
       id="enemy1_gun"
-      enemy
       position="1.7 1.4 -2.5"
       look-at="#pistol_view"
       visible="false"
     >
       <a-entity
+        id="enemy1_gun_shoothandler"
         shooter="bulletTypes: normal; activeBulletType: normal"
         rotation="0 180 0"
       >
@@ -106,10 +107,10 @@
     <a-entity
       class="enemies"
       id="enemy2"
-      position="2 0.9 -6"
+      position="2 0.8 -6"
       enemy
       target_bullet
-      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.8;"
+      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.6;"
       material="src: assets/pictures/brick.jpg"
       look-at="#enemy_view"
       visible="false">
@@ -117,12 +118,13 @@
     <a-entity
       class="enemies"
       id="enemy2_gun"
-      enemy
       position="1.7 1.4 -5.5"
       look-at="#pistol_view"
       visible="false"
     >
       <a-entity
+        id="enemy2_gun_shoothandler"
+        enemy-shoot
         shooter="bulletTypes: normal; activeBulletType: normal"
         rotation="0 180 0"
       >
@@ -138,10 +140,10 @@
     <a-entity
       class="enemies"
       id="enemy3"
-      position="-2 0.9 -3"
+      position="-2 0.8 -3"
       enemy
       target_bullet
-      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.8;"
+      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.6;"
       material="src: assets/pictures/brick.jpg"
       look-at="#enemy_view"
       visible="false">
@@ -149,12 +151,13 @@
     <a-entity
       class="enemies"
       id="enemy3_gun"
-      enemy
       position="-2.3 1.4 -2.5"
       look-at="#pistol_view"
       visible="false"
     >
       <a-entity
+        id="enemy3_gun_shoothandler"
+        enemy-shoot
         shooter="bulletTypes: normal; activeBulletType: normal"
         rotation="0 180 0"
       >
@@ -170,10 +173,10 @@
     <a-entity
       class="enemies"
       id="enemy4"
-      position="-2 0.9 -6"
+      position="-2 0.8 -6"
       enemy
       target_bullet
-      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.8;"
+      geometry="primitive: box; depth: 0.5; width: 0.5; height: 1.6;"
       material="src: assets/pictures/brick.jpg"
       look-at="#enemy_view"
       visible="false">
@@ -181,12 +184,13 @@
     <a-entity
       class="enemies"
       id="enemy4_gun"
-      enemy
       position="-2.3 1.4 -5.5"
       look-at="#pistol_view"
       visible="false"
     >
       <a-entity
+        id="enemy4_gun_shoothandler"
+        enemy-shoot
         shooter="bulletTypes: normal; activeBulletType: normal"
         rotation="0 180 0"
       >
@@ -221,21 +225,20 @@
       <a-entity id="sound_shoot_left" sound="src: #gunshot1; poolSize: 10; on: shoot; volume: 1.0"></a-entity>
       <a-entity id="left_laser" light="type: spot; angle: 1" position="0 0 0" visible="false" in-vr></a-entity>
     </a-entity>
-
     
-    <a-entity id="pistol_view" position="0 1.4 0"></a-entity>
-    <a-entity id="enemy_view" position="0 0.9 0"></a-entity>
-    <a-camera id="camera" shooter="bulletTypes: normal; activeBulletType: normal;" click-to-shoot wasd-controls-enabled="false">
-      <a-entity id="fps_laser" light="type: spot; angle: 1" position="0 0 0" visible="true" in-vr></a-entity>
-      <a-cylinder id="player"
+    <a-entity id="pistol_view" position="0 1.3 0"></a-entity>
+    <a-entity id="enemy_view" position="0 0.8 0"></a-entity>
+    <a-camera id="camera" shooter="bulletTypes: normal; activeBulletType: normal;"  wasd-controls-enabled="false">
+      <a-entity id="player"
+        position="0 0.8 0"
         player
         target_bullet="healthPoints: 3"
-        position="0 -0.75 0"
-        height="1.8"
-        radius="0.25"></a-cylinder>
+        geometry="primitive: cylinder; height: 1.6; radius: 0.25;">
+      </a-entity>
       <a-text id="health_display" value="HP: 3" color="white" anchor="left" width="1.5" align="center" position= "-0.75 0.7 -1" resize-text in-vr visible="false"></a-text>
       <a-text id="score_display" value="Score: 0" color="white" anchor="left" width="1.5" align="center" position= "-0.75 0.8 -1" resize-text in-vr visible="false"></a-text>
     </a-camera>
+    
     <a-entity id="song_game" sound="src: #song; volume: 0.15; loop: false; on: playsong; positional: false"></a-entity>
     
     <a-light type="ambient" material="color: #b0afc9"></a-light>
