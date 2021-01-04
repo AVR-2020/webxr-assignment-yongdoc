@@ -123,10 +123,16 @@ AFRAME.registerSystem('bullet', {
     bulletContainer = document.createElement('a-entity');
     bulletContainer.id = 'BulletContainer';
     this.el.sceneEl.appendChild(bulletContainer);
-
     this.container = bulletContainer.object3D;
     this.pool = {};
     this.targets = [];
+
+    this.el.addEventListener('endgame', function() {
+      for (i = 0; i < this.container.children.length; i++) {
+        bullet = this.container.children[i];
+        this.killBullet(bullet);
+      }
+    }.bind(this));
   },
 
   /**
@@ -332,6 +338,7 @@ AFRAME.registerComponent('enemy', {
     document.getElementById('title').object3D.visible = false;
     document.getElementById('start_button').object3D.visible = false;
     document.getElementById('howtoplay_button').object3D.visible = false;
+    document.getElementById('closepage_button').object3D.visible = false;
     document.getElementById('score_display').object3D.visible = true;
     document.getElementById('health_display').object3D.visible = true;
 
@@ -384,16 +391,25 @@ AFRAME.registerComponent('player', {
   },
 
   gamestop: function () {
-    console.log("berhenti");
-    health = 3;
-    score = 0;
     document.getElementById('title').object3D.visible = true;
     document.getElementById('song_game').components.sound.stopSound();
     document.getElementById('start_button').object3D.visible = true;
     document.getElementById('howtoplay_button').object3D.visible = true;
+    document.getElementById('closepage_button').object3D.visible = true;
     document.getElementById('score_display').object3D.visible = false;
     document.getElementById('health_display').object3D.visible = false;
+    document.getElementById('score').setAttribute('value', score);
+
+    health = 3;
+    score = 0;
     this.el.emit('endgame');
   }
 });
 
+AFRAME.registerComponent('close-page', {
+  init: function () {
+    this.el.addEventListener('closetab', function() {
+      window.close();
+    });
+  }
+});
